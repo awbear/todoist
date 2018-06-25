@@ -10,6 +10,16 @@ h1 {
     margin: 2rem;
 }
 
+ul, li {
+    list-style: none;
+    margin: 0;
+}
+
+input {
+    outline: none;
+    border: 0;
+}
+
 .todoist {
     min-width: 250px;
     max-width: 600px;
@@ -50,5 +60,43 @@ h1 {
 }
 
 .todo-list {
-    display: none;
+    display: block;
+}
+
+.todo-list li {
+    position: relative;
+}
+
+.todo-list li span {
+    display: block;
+    padding: 15px 60px 15px 15px;
+    margin-left: 45px;
+}
+
+.todo-list li .check {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+}
+
+.todo-list li .close {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    font-size: 2rem;
+    color: #cc9a9a;
+    background: none;
+    outline: none;
+    padding: 0;
+    border: 0;
+}
+
+.todo-list li .close:after {
+    content: 'x'
 }
