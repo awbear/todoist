@@ -61,10 +61,17 @@ input {
 
 .todo-list {
     display: block;
+    border-top: 1px solid #ededed;
+    font-size: 24px;
 }
 
 .todo-list li {
     position: relative;
+    border-bottom: 1px solid #ededed;
+}
+
+.todo-list li:last-child {
+    border-bottom: none;
 }
 
 .todo-list li span {
@@ -80,15 +87,27 @@ input {
     width: 40px;
     height: 40px;
     margin: auto 0;
+    -webkit-appearance: none;
+}
+
+.todo-list li .check:after {
+    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>');
+}
+
+.todo-list li .check:checked:after {
+    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>');
+}
+
+.todo-list li .check:checked+span {
+    color: #d9d9d9;
+    text-decoration: line-through;
 }
 
 .todo-list li .close {
     position: absolute;
     top: 0;
     right: 1rem;
-    width: 40px;
-    height: 40px;
-    margin: auto 0;
+    bottom: 0;
     font-size: 2rem;
     color: #cc9a9a;
     background: none;
@@ -99,4 +118,53 @@ input {
 
 .todo-list li .close:after {
     content: 'x'
+}
+
+.footer {
+    color: #777;
+    padding: 10px 15px;
+    border-top: 1px solid #ededed;
+    position: relative;
+}
+
+
+.todoist .footer .filters {
+    text-align: center;
+}
+
+.footer .count {
+    float: left;
+
+}
+
+.footer:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
+                0 8px 0 -3px #f6f6f6,
+                0 9px 1px -3px rgba(0, 0, 0, 0.2),
+                0 16px 0 -6px #f6f6f6,
+                0 17px 2px -6px rgba(0, 0, 0, 0.2);
+}
+
+
+.todoist .footer .filters li {
+   display: inline;
+}
+
+.todoist .footer .filters li a {
+    color: inherit;
+    margin: 3px;
+    padding: 3px 7px; 
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.todoist .footer .filters li a.selected {
+    border-color: rgba(175, 47, 47, 0.2);
 }
