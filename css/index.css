@@ -135,14 +135,20 @@ input {
     outline: none;
     padding: 0;
     border: 0;
+    display: none;
 }
 
 .todo-list li .close:after {
     content: 'x'
 }
 
+.todo-list li:hover .close {
+    display: block;
+}
+
 .footer {
     color: #777;
+    height: 20px;
     padding: 10px 15px;
     border-top: 1px solid #ededed;
     position: relative;
@@ -151,14 +157,18 @@ input {
 
 .todoist .footer .filters {
     text-align: center;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    right: 0;
 }
 
-.footer .count {
+.footer .todo-count {
     float: left;
-
 }
 
-.footer:after {
+.footer:before{
     content: '';
     position: absolute;
     right: 0;
