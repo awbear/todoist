@@ -1,17 +1,22 @@
 const Todoist = {
+  $global: window,
   elems: [
     { name: '$newTodo', el: '.new-todo' },
     { name: '$toggleAll', el: '.toggle-all' },
     { name: '$todoList', el: '.todo-list' },
     { name: '$todoCount', el: '.todo-count strong' },
     { name: '$footer', el: '.footer' },
+    { name: '$filters', el: '.filters' }
   ],
   events: [
     { name: '$newTodo', event: 'keypress', fn: 'addTodo' },
     { name: '$todoList', event: 'click', fn: 'handleTodoListClick' },
+    { name: '$global', event: 'hashchange', fn: 'handleHashChange' },
+    { name: '$filters', event: 'click', fn: 'filterChange' },
   ],
   data: {
     todoCount: 1,
+    todos: [],
   },
   addTodo(e) {
     if (e.key !== 'Enter') {
@@ -22,8 +27,9 @@ const Todoist = {
     }
     
     const item = this.createNewTodoItem(e.target.value)
-    this.$todoList.appendChild(item)
+    this.$todoList.appendChild(item.el)
     e.target.value = ''
+    this.data.todos.push(item.data)
     this.updateTodoCount(1)
     this.updateFooterDisplay()
   },
@@ -44,9 +50,14 @@ const Todoist = {
     fragment.appendChild(button)
     
     const li = this.$doc.createElement('li')
+    const d = {
+      id: new Date().getTime() + '',
+      content: todo,
+    }
+    li.setAttribute('data-id', d.id)
     li.appendChild(fragment) 
 
-    return li
+    return { el: li, data: d }
   },
   handleTodoListClick(e) {
     const target = e.target
@@ -68,6 +79,10 @@ const Todoist = {
     if (!e.target.parentElement.classList.contains('completed')) {
       this.updateTodoCount(-1)
     }
+    const id = e.target.parentElement.getAttribute('data-id')
+    this.data.todos = this.data.todos.filter(item =>{ 
+      return item.id !== id
+    })
     e.target.parentNode.remove()
     this.updateFooterDisplay()
   },
@@ -81,6 +96,18 @@ const Todoist = {
     } else {
       this.$footer.style.display = 'block'
     }
+  },
+  handleHashChange(e) {
+    console.log(e)
+  },
+  filterChange(e) {
+    const links = this.$filters.querySelectorAll('a')
+    links.forEach(l => {
+      if (l.classList.contains('selected')) {
+        l.classList.remove('selected')
+      }
+    })
+    e.target.classList.add('selected')
   },
   initElems() {
     this.$doc = document
