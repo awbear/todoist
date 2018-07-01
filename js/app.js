@@ -15,7 +15,7 @@ const Todoist = {
     { name: '$filters', event: 'click', fn: 'filterChange' },
   ],
   data: {
-    todoCount: 1,
+    todoCount: 0,
     todos: [],
   },
   addTodo(e) {
@@ -53,6 +53,7 @@ const Todoist = {
     const d = {
       id: new Date().getTime() + '',
       content: todo,
+      status: 'active',
     }
     li.setAttribute('data-id', d.id)
     li.appendChild(fragment) 
@@ -67,8 +68,25 @@ const Todoist = {
       this.markCompletedItem(e)
     }
   },
+  findTodo(id) {
+    for(let i = 0; i< this.data.todos.length; i++) {
+      if (this.data.todos[i].id === id) {
+        return this.data.todos[i]
+      }
+    }
+    return null
+  },
   markCompletedItem(e) {
-    e.target.parentElement.classList.toggle('completed')
+    const parent = e.target.parentElement;
+    const id = parent.getAttribute('data-id')
+    const todo = this.findTodo(id)
+    if (parent.classList.contains('completed')) {
+      parent.classList.remove('completed')
+      todo.status = 'active'
+    } else {
+      parent.classList.add('completed')
+      todo.status = 'completed'
+    }
     if (e.target.checked) {
       this.updateTodoCount(-1)
     } else {
@@ -123,6 +141,7 @@ const Todoist = {
   init() {
     this.initElems()
     this.initEvents()
+    this.updateFooterDisplay()
   },
 }
 
