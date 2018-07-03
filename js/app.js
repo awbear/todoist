@@ -33,12 +33,15 @@ const Todoist = {
     this.updateTodoCount(1)
     this.updateFooterDisplay()
   },
-  createNewTodoItem(todo) {
+  createNewTodoItem(todo, id, status) {
     const fragment = this.$doc.createDocumentFragment()
 
     const input = this.$doc.createElement('input')
     input.type = 'checkbox'
     input.className = 'check'
+    if (status === 'completed') {
+      input.checked = true
+    }
     fragment.appendChild(input)
 
     const span = this.$doc.createElement('span')
@@ -51,9 +54,12 @@ const Todoist = {
     
     const li = this.$doc.createElement('li')
     const d = {
-      id: new Date().getTime() + '',
+      id: id || new Date().getTime() + '',
       content: todo,
       status: 'active',
+    }
+    if (status) {
+      li.className = status
     }
     li.setAttribute('data-id', d.id)
     li.appendChild(fragment) 
@@ -116,7 +122,23 @@ const Todoist = {
     }
   },
   handleHashChange(e) {
-    console.log(e)
+    let url = e.newURL;
+    let status = url.slice(url.indexOf('#') + 2).toLowerCase()
+    this.removeChildren(this.$todoList)
+    this.data.todos.filter((item) => {
+      if (!status) {
+        return true
+      }
+      return item.status === status;
+    }).forEach((item) => {
+      const i = this.createNewTodoItem(item.content, item.id, item.status)
+      this.$todoList.appendChild(i.el)
+    })
+  },
+  removeChildren(el) {
+    while (el.firstChild) {
+      el.removeChild(el.firstChild)
+    }
   },
   filterChange(e) {
     const links = this.$filters.querySelectorAll('a')
